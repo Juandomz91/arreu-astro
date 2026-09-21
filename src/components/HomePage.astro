@@ -1,0 +1,50 @@
+---
+// La pàgina sencera. Abans era App.jsx; ara la fan servir les 4 rutes d'idioma.
+import { getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from './Nav.jsx';
+import Hero from './Hero.jsx';
+import { QueFem, QuiSom, ComTreballem, PerQue } from './Sections.jsx';
+import ContactForm from './ContactForm.jsx';
+import { colors } from '../theme.js';
+
+import nurbiRaw from '../recursos/nurbi.jpg';
+import duoRaw from '../recursos/duo.jpeg';
+import bluesRaw from '../recursos/blues.jpg';
+import furgoneteoRaw from '../recursos/furgoneteo.jpg';
+import logo from '../recursos/logo.svg';
+
+const { lang } = Astro.props;
+
+// Les fotos es converteixen a WebP i a una mida raonable en compilar:
+// es veuen igual però pesen molt menys (abans, fins a 2,8 MB cadascuna).
+const webp = async (src, width) => (await getImage({ src, width, format: 'webp' })).src;
+const images = {
+  nurbi: await webp(nurbiRaw, 900),
+  duo: await webp(duoRaw, 900),
+  blues: await webp(bluesRaw, 900),
+};
+
+// Fotos de la graella de "Què fem": totes les de src/recursos/que-fem/,
+// ordenades pel nom del fitxer (01.jpg, 02.jpg... 09.jpg).
+const galleryFiles = import.meta.glob('../recursos/que-fem/*.{jpg,jpeg,png,webp}', { eager: true, import: 'default' });
+const gallery = await Promise.all(
+  Object.keys(galleryFiles).sort().slice(0, 9).map((path) => webp(galleryFiles[path], 800))
+);
+// La foto de Contacta passa també amb les seves mides, perquè el navegador
+// li reservi l'espai abans de carregar-la i la pàgina no faci salts.
+const contactOpt = await getImage({ src: furgoneteoRaw, width: 1920, format: 'webp' });
+const contactImage = { src: contactOpt.src, width: contactOpt.attributes.width, height: contactOpt.attributes.height };
+---
+<BaseLayout lang={lang}>
+  <slot name="head" slot="head" />
+  <div style={`display:flex;flex-direction:column;width:100%;max-width:100%;overflow-x:clip;background:${colors.bg}`}>
+    <Nav lang={lang} client:load />
+    <Hero lang={lang} logoSrc={logo.src} />
+    <QueFem lang={lang} gallery={gallery} />
+    <QuiSom lang={lang} images={images} />
+    <ComTreballem lang={lang} />
+    <PerQue lang={lang} />
+    <ContactForm lang={lang} image={contactImage} client:load />
+  </div>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+// Català, a l'arrel del domini: https://arreucampers.com/
+import HomePage from '../components/HomePage.astro';
+---
+<HomePage lang="ca">
+  {/* Si l'usuari ja havia triat un altre idioma, el portem directament a aquell.
+      Només actua amb una elecció explícita (mai amb l'idioma del navegador),
+      així Google sempre veu el català en aquesta URL. */}
+  <script is:inline slot="head">
+    try {
+      var saved = localStorage.getItem('lang');
+      if (saved === 'es' || saved === 'en' || saved === 'fr') location.replace('/' + saved + '/');
+    } catch (e) {}
+  </script>
+</HomePage>

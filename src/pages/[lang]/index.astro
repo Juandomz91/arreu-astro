@@ -1,0 +1,12 @@
+---
+// Genera /es/, /en/ i /fr/ (el català és a l'arrel, a pages/index.astro)
+import HomePage from '../../components/HomePage.astro';
+import { LANGUAGES, DEFAULT_LANG } from '../../i18n/translations.js';
+
+export function getStaticPaths() {
+  return LANGUAGES.filter((lang) => lang !== DEFAULT_LANG).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+---
+<HomePage lang={lang} />
