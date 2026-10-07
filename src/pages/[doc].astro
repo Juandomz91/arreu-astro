@@ -1,0 +1,18 @@
+---
+// Pàgines legals en català (idioma per defecte, a l'arrel del domini):
+//   /avis-legal/   i   /politica-privacitat/
+// Les adreces de cada document estan definides a src/i18n/legal-ui.js (LEGAL_SLUGS).
+import LegalPage from '../components/LegalPage.astro';
+import { LEGAL_SLUGS, LEGAL_DOCS } from '../i18n/legal-ui.js';
+import { DEFAULT_LANG } from '../i18n/translations.js';
+
+export function getStaticPaths() {
+  return LEGAL_DOCS.map((doc) => ({
+    params: { doc: LEGAL_SLUGS[DEFAULT_LANG][doc] },
+    props: { doc },
+  }));
+}
+
+const { doc } = Astro.props;
+---
+<LegalPage lang={DEFAULT_LANG} doc={doc} />

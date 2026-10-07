@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { colors, fonts } from '../theme.js';
 import { getT } from '../i18n/translations.js';
 import { BUSINESS } from '../config.js';
+import { getFormLegal, legalUrl } from '../i18n/legal-ui.js';
 
 // En Astro, les variables d'entorn visibles al navegador han de començar per PUBLIC_
 const API_URL = import.meta.env.PUBLIC_API_URL || '/api';
 
-const EMPTY_FORM = { nom: '', cognom: '', email: '', missatge: '', website: '' };
+const EMPTY_FORM = { nom: '', cognom: '', email: '', missatge: '', website: '', consent: false };
 
 // Es carrega amb client:load (vegeu HomePage.astro): té estat i envia dades.
 export default function ContactForm({ lang, image }) {
   const t = getT(lang);
+  const legal = getFormLegal(lang);
+  const privacyHref = legalUrl(lang, 'privacy');
   const [form, setForm] = useState(EMPTY_FORM);
   const [status, setStatus] = useState('idle'); // idle | sending | ok | error
 
@@ -85,6 +88,35 @@ export default function ContactForm({ lang, image }) {
             <label style={{ ...labelStyle, maxWidth: 760, marginTop: 20 }}>{t('contact.message')}
               <textarea rows={5} value={form.missatge} onChange={update('missatge')} style={{ ...inputStyle, resize: 'vertical' }} />
             </label>
+            {/* Consentiment (RGPD): obligatori. L'enllaç s'obre en una pestanya nova perquè no es perdin les dades ja escrites. */}
+            <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, maxWidth: 760, marginTop: 24, fontSize: 14, lineHeight: 1.5, fontFamily: fonts.body }}>
+              <input
+                type="checkbox"
+                required
+                checked={form.consent}
+                onChange={(e) => setForm((f) => ({ ...f, consent: e.target.checked }))}
+                style={{ marginTop: 3, width: 18, height: 18, flexShrink: 0, accentColor: colors.ink }}
+              />
+              <span>
+                {legal.consentBefore}
+                <a href={privacyHref} target="_blank" rel="noopener noreferrer" style={{ color: colors.ink, textDecoration: 'underline' }}>{legal.consentLink}</a>
+                {legal.consentAfter}
+              </span>
+            </label>
+            {/* Informació bàsica sobre protecció de dades (primera capa) */}
+            <div style={{ maxWidth: 760, marginTop: 14, fontSize: 13, lineHeight: 1.5, color: colors.muted, fontFamily: fonts.body }}>
+              <strong>{legal.infoTitle}</strong>
+              <ul style={{ listStyle: 'none', margin: '6px 0 0', padding: 0 }}>
+                {legal.rows.map(([label, value]) => (
+                  <li key={label} style={{ marginBottom: 2 }}><strong>{label}:</strong> {value}</li>
+                ))}
+              </ul>
+              <p style={{ margin: '6px 0 0' }}>
+                {legal.moreBefore}
+                <a href={privacyHref} target="_blank" rel="noopener noreferrer" style={{ color: colors.ink, textDecoration: 'underline' }}>{legal.consentLink}</a>
+                {legal.moreAfter}
+              </p>
+            </div>
             <button type="submit" disabled={status === 'sending'} style={{
               marginTop: 24, maxWidth: 760, width: '100%', padding: 16, background: colors.ink, color: colors.bg,
               border: 'none', fontSize: 16, fontWeight: 600, cursor: 'pointer', borderRadius: 2, fontFamily: fonts.body

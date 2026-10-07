@@ -11,6 +11,7 @@ Executa amb: uvicorn main:app --reload --port 8000
 import logging
 import os
 import smtplib
+from datetime import datetime, timezone
 from email.message import EmailMessage
 from typing import Annotated
 
@@ -57,6 +58,8 @@ class ContactMessage(BaseModel):
     cognom: str | None = Field(None, max_length=100)
     email: EmailStr
     missatge: str | None = Field(None, max_length=4000)
+    # Casella de la política de privacitat (RGPD). Sense ella no s'envia res.
+    consent: bool = False
     # Parany anti-spam (honeypot): el formulari l'amaga, així que una persona
     # sempre l'envia buit. Si arriba ple, és un bot.
     website: str | None = Field(None, max_length=200)
@@ -92,7 +95,9 @@ def _send_email(entry: dict) -> None:
     msg.set_content(
         f"Nom: {full_name}\n"
         f"Email: {entry['email']}\n\n"
-        f"Missatge:\n{entry.get('missatge') or '(sense missatge)'}"
+        f"Missatge:\n{entry.get('missatge') or '(sense missatge)'}\n\n"
+        # Constància del consentiment (el correu és l'únic registre que es conserva)
+        f"Consentiment: ha acceptat la política de privacitat ({entry['consent_at']} UTC)"
     )
 
     # Port 465 = SSL directe; la resta (587...) = connexió normal amb STARTTLS
@@ -121,7 +126,11 @@ def create_contact(payload: ContactMessage):
         logger.info("Missatge descartat pel parany anti-spam")
         return {"ok": True}
 
+    if not payload.consent:
+        raise HTTPException(status_code=422, detail="Cal acceptar la política de privacitat")
+
     entry = payload.model_dump(exclude={"website"})
+    entry["consent_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
     try:
         _send_email(entry)

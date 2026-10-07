@@ -6,6 +6,7 @@ import Nav from './Nav.jsx';
 import Hero from './Hero.jsx';
 import { QueFem, QuiSom, ComTreballem, PerQue } from './Sections.jsx';
 import ContactForm from './ContactForm.jsx';
+import Footer from './Footer.astro';
 import { colors } from '../theme.js';
 
 import nurbiRaw from '../recursos/nurbi.jpg';
@@ -46,5 +47,6 @@ const contactImage = { src: contactOpt.src, width: contactOpt.attributes.width, 
     <ComTreballem lang={lang} />
     <PerQue lang={lang} />
     <ContactForm lang={lang} image={contactImage} client:load />
+    <Footer lang={lang} />
   </div>
 </BaseLayout>

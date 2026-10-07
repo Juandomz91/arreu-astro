@@ -1,0 +1,35 @@
+---
+// Peu de pàgina: copyright i enllaços a l'Avís legal i a la Política de privacitat.
+// Es fa servir a la pàgina principal (HomePage.astro) i a les pàgines legals (LegalPage.astro).
+import { getLegalUI, legalUrl } from '../i18n/legal-ui.js';
+import { BUSINESS } from '../config.js';
+
+const { lang } = Astro.props;
+const ui = getLegalUI(lang);
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <p class="copy">© {year} {BUSINESS.name}. {ui.rights}</p>
+  <nav aria-label={ui.footerNav}>
+    <a href={legalUrl(lang, 'legal')}>{ui.legal}</a>
+    <a href={legalUrl(lang, 'privacy')}>{ui.privacy}</a>
+  </nav>
+</footer>
+
+<style>
+  .site-footer {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 12px 28px; padding: 24px 28px;
+    background: #141310; color: #eef2ea;
+    border-top: 2px solid #e35a1c;
+    font-family: 'IBM Plex Mono', monospace; font-size: 14px;
+  }
+  .copy { margin: 0; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  a {
+    color: #eef2ea; text-decoration: underline; text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  a:hover { text-decoration-color: #e35a1c; text-decoration-thickness: 2px; }
+  a:focus-visible { outline: 2px solid #e35a1c; outline-offset: 4px; }
+</style>

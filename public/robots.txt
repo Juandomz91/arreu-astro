@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arreucampers.com/sitemap-index.xml
+Sitemap: https://campersgirona.com/sitemap-index.xml
