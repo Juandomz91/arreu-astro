@@ -17,14 +17,14 @@ export const translations = {
       vanTours: 'Mira els van tours a',
     },
     queFem: {
-      title: 'Què fem',
-      // ca, debajo de  title: 'Què fem',
+      title: 'QUÈ',
+      // ca, debajo de  title: 'Què',
       galleryAlt: "Projecte de camperització d'Arreu Campers",
-// es, debajo de  title: 'Qué hacemos',
+// es, debajo de  title: 'Qué',
       galleryAlt: 'Proyecto de camperización de Arreu Campers',
-// en, debajo de  title: 'What we do',
+// en, debajo de  title: 'What',
       galleryAlt: 'Arreu Campers van conversion project',
-// fr, debajo de  title: 'Ce que nous faisons',
+// fr, debajo de  title: 'Quoi',
       galleryAlt: "Projet d'aménagement de van Arreu Campers",
       intro1: 'Arreu Campers és una empresa dedicada a assessorar, dissenyar, construir i homologar camperitzacions a mida, de qualitat i amb un enfocament curiós.',
       intro2: 'Cada vehicle és una creació única, amb adaptacions enginyoses per solucionar les necessitats específiques de cada client.',
@@ -107,7 +107,7 @@ export const translations = {
       vanTours: 'Mira los van tours en',
     },
     queFem: {
-      title: 'Qué hacemos',
+      title: 'QUÉ',
       intro1: 'Arreu Campers es una empresa dedicada a asesorar, diseñar, construir y homologar camperizaciones a medida, de calidad y con un enfoque curioso.',
       intro2: 'Cada vehículo es una creación única, con adaptaciones ingeniosas para resolver las necesidades específicas de cada cliente.',
       items: [
@@ -189,7 +189,7 @@ export const translations = {
       vanTours: 'Watch the van tours on',
     },
     queFem: {
-      title: 'What we do',
+      title: 'WHAT',
       intro1: 'Arreu Campers advises on, designs, builds and certifies custom campervan conversions: high quality, with a curious approach.',
       intro2: "Every vehicle is a one-of-a-kind creation, with clever adaptations that solve each client's specific needs.",
       items: [
@@ -271,7 +271,7 @@ export const translations = {
       vanTours: 'Regardez les van tours sur',
     },
     queFem: {
-      title: 'Ce que nous faisons',
+      title: 'QUOI',
       intro1: 'Arreu Campers conseille, conçoit, construit et homologue des aménagements de vans sur mesure, de qualité et avec une approche curieuse.',
       intro2: 'Chaque véhicule est une création unique, avec des adaptations ingénieuses pour répondre aux besoins spécifiques de chaque client.',
       items: [

@@ -15,7 +15,7 @@ export function QueFem({ lang, gallery = [] }) {
   const cells = Array.from({ length: GALLERY_SIZE }, (_, i) => gallery[i]);
 
   return (
-    <section style={{ padding: '100px 24px', background: colors.bg, fontFamily: fonts.mono }}>
+    <section id="que" style={{ padding: '100px 24px', background: colors.bg, fontFamily: fonts.mono }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <h2 style={{ fontSize: 'clamp(32px,5vw,56px)', margin: '10px 0 24px', textTransform: 'uppercase', lineHeight: 1 }}>{t('queFem.title')}</h2>
         <p style={{ maxWidth: 640, fontSize: 18, lineHeight: 1.6, color: colors.bodyText, marginBottom: 56 }}>
@@ -46,7 +46,7 @@ export function QuiSom({ lang, images }) {
   const t = getT(lang);
 
   return (
-    <section style={{ padding: '100px 24px', background: colors.ink, color: colors.bg, fontFamily: fonts.mono }}>
+    <section id="qui" style={{ padding: '100px 24px', background: colors.ink, color: colors.bg, fontFamily: fonts.mono }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', margin: '10px 0 24px', textTransform: 'uppercase', lineHeight: 1, color: colors.accent }}>{t('quiSom.title')}</h2>
         <p style={{ maxWidth: 900, fontSize: 18, lineHeight: 1.6, color: colors.bodyTextLight, marginBottom: 56 }}>
@@ -86,7 +86,7 @@ export function ComTreballem({ lang }) {
   const steps = t('com.steps');
 
   return (
-    <section style={{ padding: '100px 24px', background: colors.bg }}>
+    <section id="com" style={{ padding: '100px 24px', background: colors.bg }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <h2 style={{ fontFamily: fonts.logo, fontSize: 'clamp(32px,5vw,56px)', margin: '10px 0 48px', textTransform: 'uppercase', lineHeight: 1 }}>{t('com.title')}</h2>
         <div style={{ display: 'flex', flexDirection: 'column', borderTop: `2px solid ${colors.ink}` }}>
@@ -112,7 +112,7 @@ export function PerQue({ lang }) {
   const reasons = t('perQue.reasons');
 
   return (
-    <section style={{ padding: '100px 24px', background: colors.ink, color: colors.bg }}>
+    <section id="perque" style={{ padding: '100px 24px', background: colors.ink, color: colors.bg }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
         <h2 style={{ fontFamily: fonts.logo, fontSize: 'clamp(32px,5vw,56px)', margin: '10px 0 48px', textTransform: 'uppercase', lineHeight: 1, color: colors.bg }}>{t('perQue.title')}</h2>

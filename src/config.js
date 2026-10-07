@@ -15,6 +15,6 @@ export const BUSINESS = {
 
 export const SOCIAL = {
   whatsapp: 'https://wa.me/34623944937',
-  instagram: 'https://instagram.com', // ← POSA AQUÍ EL PERFIL REAL (https://www.instagram.com/usuari/)
+  instagram: 'https://www.instagram.com/arreucampers?stkn=MWUxbDNmb3Jkc3ZhMw%3D%3D', 
   youtube: 'https://www.youtube.com/@ArreuCampers',
 };
