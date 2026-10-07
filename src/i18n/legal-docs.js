@@ -126,7 +126,6 @@ function docsCa(d, a) {
               list: [
                 `<strong>Responsable:</strong> ${d.holder}`,
                 `<strong>NIF/CIF:</strong> ${d.taxId}`,
-                `<strong>Domicili:</strong> ${d.address}`,
                 `<strong>Correu electrònic:</strong> ${d.privacyEmailLink}`,
               ],
             },

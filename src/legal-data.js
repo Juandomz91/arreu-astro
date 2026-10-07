@@ -9,13 +9,11 @@ import { BUSINESS } from './config.js';
 
 export const LEGAL = {
   // Titular del web: persona física (nom i cognoms) o societat (raó social)
-  holder: '[NOM I COGNOMS DEL TITULAR O RAÓ SOCIAL]',
+  holder: 'Norbert Artigas Roura',
 
   // NIF (persona física) o CIF (societat)
-  taxId: '[NIF / CIF]',
+  taxId: '41581247-F',
 
-  // Domicili o adreça de l'establiment a Espanya (carrer, número, codi postal, població)
-  address: '[ADREÇA COMPLETA]',
 
   // Només si el titular és una societat inscrita al Registre Mercantil
   // (p. ex. 'Registre Mercantil de Girona, tom X, foli Y, full Z').
@@ -27,7 +25,7 @@ export const LEGAL = {
 
   // Proveïdors que reben les dades (encarregats del tractament)
   hostingProvider: 'Clever Cloud',
-  emailProvider: '[PROVEÏDOR DE CORREU, p. ex. Google (Gmail)]',
+  emailProvider: ' Gmail',
 
   // Quant de temps es guarden els missatges si no arriba a haver-hi relació comercial
   retentionMonths: 12,
