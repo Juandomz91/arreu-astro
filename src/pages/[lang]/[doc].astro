@@ -1,0 +1,17 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import { LEGAL_SLUGS, LEGAL_DOCS } from '../../i18n/legal-ui.js';
+import { LANGUAGES, DEFAULT_LANG } from '../../i18n/translations.js';
+
+export function getStaticPaths() {
+  return LANGUAGES.filter((l) => l !== DEFAULT_LANG).flatMap((lang) =>
+    LEGAL_DOCS.map((doc) => ({
+      params: { lang, doc: LEGAL_SLUGS[lang][doc] },
+      props: { lang, doc },
+    }))
+  );
+}
+
+const { lang, doc } = Astro.props;
+---
+<LegalPage lang={lang} doc={doc} />
