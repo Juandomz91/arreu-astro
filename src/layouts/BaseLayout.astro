@@ -4,10 +4,18 @@
 import { getT, LANGUAGES, DEFAULT_LANG, langUrl } from '../i18n/translations.js';
 import { SITE_URL, BUSINESS, SOCIAL } from '../config.js';
 
-const { lang } = Astro.props;
+
+const { lang, title, description, path, alternates, schema = true } = Astro.props;
 const t = getT(lang);
 
-const pageUrl = SITE_URL + langUrl(lang);
+const pageTitle = title ?? t('meta.title');
+const pageDesc = description ?? t('meta.description');
+const pagePath = path ?? langUrl(lang);
+const pageUrl = SITE_URL + pagePath;
+const altLinks = alternates
+  ? alternates.map((a) => ({ lang: a.lang, href: SITE_URL + a.path }))
+  : LANGUAGES.map((l) => ({ lang: l, href: SITE_URL + langUrl(l) }));
+const xDefault = altLinks.find((a) => a.lang === DEFAULT_LANG)?.href ?? pageUrl;
 const ogImage = SITE_URL + '/video/hero-poster.jpg';
 const ogLocales = { ca: 'ca_ES', es: 'es_ES', en: 'en_GB', fr: 'fr_FR' };
 
