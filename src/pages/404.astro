@@ -1,0 +1,27 @@
+---
+// Pàgina d'error 404. Astro la compila a dist/404.html (el servidor la mostra
+// quan l'adreça no existeix). Com que no sabem l'idioma, el text va en els 4.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { DEFAULT_LANG } from '../i18n/translations.js';
+---
+<BaseLayout lang={DEFAULT_LANG}>
+  <main class="notfound">
+    <h1>404</h1>
+    <p lang="ca">Aquesta pàgina no existeix. <a href="/">Tornar a l'inici</a></p>
+    <p lang="es">Esta página no existe. <a href="/es/">Volver al inicio</a></p>
+    <p lang="en">This page does not exist. <a href="/en/">Back to home</a></p>
+    <p lang="fr">Cette page n'existe pas. <a href="/fr/">Retour à l'accueil</a></p>
+  </main>
+</BaseLayout>
+
+<style>
+  .notfound {
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 8px; padding: 24px; text-align: center;
+    background: #eef2ea; color: #141310; font-family: 'IBM Plex Mono', monospace;
+  }
+  h1 { font-size: 72px; margin: 0; color: #e35a1c; }
+  p { margin: 0; font-size: 16px; }
+  a { color: #141310; text-underline-offset: 4px; }
+  a:hover { text-decoration-color: #e35a1c; }
+</style>

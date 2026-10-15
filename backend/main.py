@@ -19,6 +19,11 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field, StringConstraints
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseModel, EmailStr, Field, StringConstraints
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 load_dotenv()
 
@@ -27,11 +32,18 @@ logger = logging.getLogger("arreu.contact")
 
 # Sense documentació interactiva (/docs, /redoc, /openapi.json) a producció
 app = FastAPI(
+
     title="Arreu Campers - Contact API",
     docs_url=None,
     redoc_url=None,
     openapi_url=None,
 )
+
+# Límit de peticions per IP (en memòria, per instància)
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 
 # 4321 és el port de desenvolupament d'Astro. A producció, defineix
 # ALLOWED_ORIGINS amb el domini del web (p. ex. https://campersgirona.com).
@@ -120,6 +132,7 @@ def health():
 
 
 @app.post("/api/contact", status_code=201)
+@limiter.limit("5/minute;20/hour")
 def create_contact(payload: ContactMessage):
     if payload.website:
         # Bot: responem com si tot hagués anat bé, però no enviem cap correu
