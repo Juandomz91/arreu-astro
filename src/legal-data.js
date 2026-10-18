@@ -14,7 +14,6 @@ export const LEGAL = {
   // NIF (persona física) o CIF (societat)
   taxId: '41581247-F',
 
-
   // Només si el titular és una societat inscrita al Registre Mercantil
   // (p. ex. 'Registre Mercantil de Girona, tom X, foli Y, full Z').
   // Si és autònom o no n'hi ha, deixa-ho buit: ''
@@ -25,7 +24,7 @@ export const LEGAL = {
 
   // Proveïdors que reben les dades (encarregats del tractament)
   hostingProvider: 'Clever Cloud',
-  emailProvider: ' Gmail',
+  emailProvider: 'Gmail',
 
   // Quant de temps es guarden els missatges si no arriba a haver-hi relació comercial
   retentionMonths: 12,

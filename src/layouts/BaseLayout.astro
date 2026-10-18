@@ -4,7 +4,8 @@
 import { getT, LANGUAGES, DEFAULT_LANG, langUrl } from '../i18n/translations.js';
 import { SITE_URL, BUSINESS, SOCIAL } from '../config.js';
 
-const { lang, title, description, path, alternates, schema = true } = Astro.props;
+// noindex: pàgines que Google no ha d'indexar (p. ex. la 404). Sense canonical ni idiomes alternatius.
+const { lang, title, description, path, alternates, schema = true, noindex = false } = Astro.props;
 const t = getT(lang);
 
 const pageTitle = title ?? t('meta.title');
@@ -48,11 +49,12 @@ const jsonLd = {
     <link rel="icon" href="/logo.svg" type="image/svg+xml" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDesc} />
-    <link rel="canonical" href={pageUrl} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <link rel="canonical" href={pageUrl} />}
 
     {/* Versions en altres idiomes: així Google ensenya a cadascú la seva */}
-    {altLinks.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
-    <link rel="alternate" hreflang="x-default" href={xDefault} />
+    {!noindex && altLinks.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={xDefault} />}
 
     {/* Com es veu l'enllaç en compartir-lo (WhatsApp, Instagram, Facebook...) */}
     <meta property="og:type" content="website" />
