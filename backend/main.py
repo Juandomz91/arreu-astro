@@ -14,12 +14,9 @@ import smtplib
 from datetime import datetime, timezone
 from email.message import EmailMessage
 from typing import Annotated
-
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr, Field, StringConstraints
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field, StringConstraints
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -133,7 +130,7 @@ def health():
 
 @app.post("/api/contact", status_code=201)
 @limiter.limit("5/minute;20/hour")
-def create_contact(payload: ContactMessage):
+def create_contact(request: Request, payload: ContactMessage):
     if payload.website:
         # Bot: responem com si tot hagués anat bé, però no enviem cap correu
         logger.info("Missatge descartat pel parany anti-spam")

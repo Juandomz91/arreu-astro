@@ -47,25 +47,25 @@ const jsonLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/logo.svg" type="image/svg+xml" />
-    <title>{t('meta.title')}</title>
-    <meta name="description" content={t('meta.description')} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
     <link rel="canonical" href={pageUrl} />
 
     {/* Versions en altres idiomes: així Google ensenya a cadascú la seva */}
-    {LANGUAGES.map((lng) => <link rel="alternate" hreflang={lng} href={SITE_URL + langUrl(lng)} />)}
-    <link rel="alternate" hreflang="x-default" href={SITE_URL + langUrl(DEFAULT_LANG)} />
-
+    {altLinks.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
+    
     {/* Com es veu l'enllaç en compartir-lo (WhatsApp, Instagram, Facebook...) */}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={BUSINESS.name} />
-    <meta property="og:title" content={t('meta.title')} />
-    <meta property="og:description" content={t('meta.description')} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
     <meta property="og:url" content={pageUrl} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content={ogLocales[lang]} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
