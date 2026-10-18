@@ -2,7 +2,8 @@ import { colors, fonts } from '../theme.js';
 import { getT } from '../i18n/translations.js';
 
 // Seccions sense JavaScript: Astro les converteix en HTML en compilar.
-// Les fotos arriben ja optimitzades (WebP) des de HomePage.astro, a `images`.
+// Les fotos arriben ja optimitzades (WebP) des de HomePage.astro, a `images`,
+// cadascuna com a { src, width, height }.
 
 // Graella de fotos de "Què fem": 3 × 3, amb el mateix estil de línies negres
 // que tenia la taula de textos. Les fotos arriben optimitzades des de HomePage.astro.
@@ -23,11 +24,13 @@ export function QueFem({ lang, gallery = [] }) {
           {t('queFem.intro2')}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 2, background: colors.ink, border: `2px solid ${colors.ink}` }}>
-          {cells.map((src, i) => (
+          {cells.map((img, i) => (
             <div key={i} style={{ background: colors.bg, aspectRatio: GALLERY_RATIO }}>
-              {src && (
+              {img && (
                 <img
-                  src={src}
+                  src={img.src}
+                  width={img.width}
+                  height={img.height}
                   alt={`${t('queFem.galleryAlt')} ${i + 1}`}
                   loading="lazy"
                   decoding="async"
@@ -56,7 +59,7 @@ export function QuiSom({ lang, images }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: 24 }}>
           <div>
             <div style={{ aspectRatio: '4/3', width: '100%' }}>
-              <img src={images.nurbi} loading="lazy" decoding="async" alt={t('quiSom.altTeam')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', display: 'block' }} />
+              <img src={images.nurbi.src} width={images.nurbi.width} height={images.nurbi.height} loading="lazy" decoding="async" alt={t('quiSom.altTeam')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', display: 'block' }} />
             </div>
             <div style={{ background: '#1c1b17', padding: '14px 16px', marginTop: 10 }}>
               <div style={{ fontStyle: 'italic', fontSize: 15, fontWeight: 600, color: colors.bg }}>Norbert</div>
@@ -64,11 +67,11 @@ export function QuiSom({ lang, images }) {
             </div>
           </div>
           <div style={{ aspectRatio: '4/3', width: '100%' }}>
-            <img src={images.duo} loading="lazy" decoding="async" alt={t('quiSom.altWorkshop')} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <img src={images.duo.src} width={images.duo.width} height={images.duo.height} loading="lazy" decoding="async" alt={t('quiSom.altWorkshop')} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           </div>
           <div>
             <div style={{ aspectRatio: '4/3', width: '100%' }}>
-              <img src={images.blues} loading="lazy" decoding="async" alt={t('quiSom.altVehicle')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 70%', display: 'block' }} />
+              <img src={images.blues.src} width={images.blues.width} height={images.blues.height} loading="lazy" decoding="async" alt={t('quiSom.altVehicle')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 70%', display: 'block' }} />
             </div>
             <div style={{ background: '#1c1b17', padding: '14px 16px', marginTop: 10 }}>
               <div style={{ fontStyle: 'italic', fontSize: 15, fontWeight: 600, color: colors.bg }}>Blues</div>

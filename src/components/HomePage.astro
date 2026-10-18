@@ -19,7 +19,13 @@ const { lang } = Astro.props;
 
 // Les fotos es converteixen a WebP i a una mida raonable en compilar:
 // es veuen igual però pesen molt menys (abans, fins a 2,8 MB cadascuna).
-const webp = async (src, width) => (await getImage({ src, width, format: 'webp' })).src;
+// Cada foto arriba amb les seves mides reals (src, width, height): així el navegador
+// li reserva l'espai abans de carregar-la i la pàgina no fa salts. Les mides visuals
+// (CSS) no canvien: aquestes només són la proporció de la imatge ja optimitzada.
+const webp = async (src, width) => {
+  const img = await getImage({ src, width, format: 'webp' });
+  return { src: img.src, width: img.attributes.width, height: img.attributes.height };
+};
 const images = {
   nurbi: await webp(nurbiRaw, 900),
   duo: await webp(duoRaw, 900),
