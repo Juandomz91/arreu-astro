@@ -1,4 +1,10 @@
 :8080 {
+	# Dominis alternatius -> domini principal, amb redirecció permanent (301).
+	# Llista explícita (no "tot el que no sigui el principal") perquè no es redirigeixi
+	# el domini tècnic *.cleverapps.io ni les comprovacions internes de Clever Cloud.
+	@alias host arreucampers.cat arreucampers.com www.arreucampers.com arreucampers.es www.arreucampers.es campersgirona.com www.campersgirona.com
+	redir @alias https://www.arreucampers.cat{uri} permanent
+
 	root * dist
 	encode zstd gzip
 	file_server
@@ -10,16 +16,18 @@
 		X-Frame-Options "SAMEORIGIN"
 	}
 
-	# Los ficheros de /_astro/ llevan hash en el nombre: se pueden cachear un año
+	# Els fitxers de /_astro/ porten un hash al nom: es poden guardar a la memòria cau un any
 	@assets path /_astro/*
 	header @assets Cache-Control "public, max-age=31536000, immutable"
 
-	# Vídeo y logo: un día
+	# Vídeo i logo: un dia
 	@media path /video/* /logo.svg
 	header @media Cache-Control "public, max-age=86400"
 
 	handle_errors {
 		rewrite * /404.html
+		# Que cap navegador guardi un error (p. ex. un /_astro/ que falta durant un desplegament)
+		header Cache-Control "no-store"
 		file_server
 	}
 }

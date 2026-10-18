@@ -4,7 +4,6 @@
 import { getT, LANGUAGES, DEFAULT_LANG, langUrl } from '../i18n/translations.js';
 import { SITE_URL, BUSINESS, SOCIAL } from '../config.js';
 
-
 const { lang, title, description, path, alternates, schema = true } = Astro.props;
 const t = getT(lang);
 
@@ -54,7 +53,7 @@ const jsonLd = {
     {/* Versions en altres idiomes: així Google ensenya a cadascú la seva */}
     {altLinks.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
     <link rel="alternate" hreflang="x-default" href={xDefault} />
-    
+
     {/* Com es veu l'enllaç en compartir-lo (WhatsApp, Instagram, Facebook...) */}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={BUSINESS.name} />

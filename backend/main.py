@@ -7,6 +7,7 @@ Si el correu no es pot enviar, es respon amb un error (perquè el web ho
 mostri) i es deixa constància als logs.
 
 Executa amb: uvicorn main:app --reload --port 8000
+A Clever Cloud: uvicorn main:app --host 0.0.0.0 --port 9000 --proxy-headers --forwarded-allow-ips "*"
 """
 import logging
 import os
@@ -14,6 +15,7 @@ import smtplib
 from datetime import datetime, timezone
 from email.message import EmailMessage
 from typing import Annotated
+
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -29,21 +31,21 @@ logger = logging.getLogger("arreu.contact")
 
 # Sense documentació interactiva (/docs, /redoc, /openapi.json) a producció
 app = FastAPI(
-
     title="Arreu Campers - Contact API",
     docs_url=None,
     redoc_url=None,
     openapi_url=None,
 )
 
-# Límit de peticions per IP (en memòria, per instància)
+# Límit de peticions per IP (en memòria, per instància). Darrere del proxy de
+# Clever Cloud, uvicorn ha d'arrencar amb --proxy-headers --forwarded-allow-ips "*"
+# perquè la IP sigui la del visitant i no la del proxy.
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-
 # 4321 és el port de desenvolupament d'Astro. A producció, defineix
-# ALLOWED_ORIGINS amb el domini del web (p. ex. https://campersgirona.com).
+# ALLOWED_ORIGINS amb el domini principal del web (https://www.arreucampers.cat).
 ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv("ALLOWED_ORIGINS", "http://localhost:4321").split(",")

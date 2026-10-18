@@ -4,7 +4,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { DEFAULT_LANG } from '../i18n/translations.js';
 ---
-<BaseLayout lang={DEFAULT_LANG}>
+<BaseLayout lang={DEFAULT_LANG} title="404 | Arreu Campers" schema={false}>
+  {/* Que Google no indexi la pàgina d'error */}
+  <meta name="robots" content="noindex" slot="head" />
   <main class="notfound">
     <h1>404</h1>
     <p lang="ca">Aquesta pàgina no existeix. <a href="/">Tornar a l'inici</a></p>
