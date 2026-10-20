@@ -64,6 +64,19 @@ npm run dev                  # http://localhost:4321
 
 En desenvolupament, les peticions a `/api/...` es redirigeixen soles al backend (vegeu `astro.config.mjs`), així que no cal definir `PUBLIC_API_URL`. La CSP (vegeu més avall) no s'aplica en desenvolupament.
 
+### Provar l'enviament de correu
+
+Amb el backend en marxa (terminal 1), des d'un altre terminal:
+
+```bash
+curl -s localhost:8000/api/health
+curl -s -i -X POST localhost:8000/api/contact \
+  -H "Content-Type: application/json" \
+  -d '{"nom":"Prova","email":"el_teu_correu@exemple.com","missatge":"Hola","consent":true}'
+```
+
+Ha de respondre `201` amb `{"ok":true}` i el correu ha d'arribar a `CONTACT_TO_EMAIL`. Si respon `503`, el motiu és al terminal del backend (línia `No s'ha pogut enviar el missatge de contacte...`).
+
 ## Variables d'entorn
 
 **Frontend** (`.env` a l'arrel o variables de l'aplicació a Clever Cloud). Es llegeixen **en compilar**: si les canvies, cal tornar a desplegar el web.
@@ -76,10 +89,10 @@ En desenvolupament, les peticions a `/api/...` es redirigeixen soles al backend 
 
 | Variable | Per a què serveix |
 |----------|-------------------|
-| `ALLOWED_ORIGINS` | Dominis des dels quals s'accepta el formulari. En producció: `https://www.arreucampers.cat` |
-| `SMTP_HOST`, `SMTP_PORT` | Servidor de correu (587 = STARTTLS, 465 = SSL directe) |
-| `SMTP_USER`, `SMTP_PASSWORD` | Credencials del correu (amb Gmail, una contrasenya d'aplicació) |
-| `SMTP_FROM` | Remitent; ha de ser una adreça que el proveïdor et deixi fer servir |
+| `ALLOWED_ORIGINS` | Dominis des dels quals s'accepta el formulari, separats per comes. En producció: `https://www.arreucampers.cat` |
+| `SMTP_HOST`, `SMTP_PORT` | Servidor de correu. Amb Gmail: `smtp.gmail.com` i `587` (STARTTLS). El port 465 és SSL directe. |
+| `SMTP_USER`, `SMTP_PASSWORD` | Compte amb què s'inicia sessió. Amb Gmail, ha de ser el compte real de Gmail (no un àlies) i la contrasenya ha de ser una **contrasenya d'aplicació** de 16 lletres, escrita sense espais. |
+| `SMTP_FROM` | Remitent. Amb Gmail, ha de ser el mateix compte (o un àlies "Envia com a" verificat). |
 | `CONTACT_TO_EMAIL` | Adreça on arriben els missatges del formulari |
 
 ## Compilar
@@ -111,10 +124,10 @@ Es fan **dues aplicacions** a partir del mateix repositori i la branca `main`. O
 
 ```
 CC_PIP_REQUIREMENTS_FILE=backend/requirements.txt
-CC_RUN_COMMAND=cd backend && uvicorn main:app --host 0.0.0.0 --port 9000 --proxy-headers --forwarded-allow-ips "*"
-CC_HEALTH_CHECK_PATH=/api/health
+CC_RUN_COMMAND=uvicorn --app-dir backend main:app --host 0.0.0.0 --port 9000 --proxy-headers
+FORWARDED_ALLOW_IPS=*
 ALLOWED_ORIGINS=https://www.arreucampers.cat
-SMTP_HOST=...
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=...
 SMTP_PASSWORD=...
@@ -123,6 +136,8 @@ CONTACT_TO_EMAIL=...
 ```
 
 - L'aplicació ha d'escoltar a `0.0.0.0` i al port `9000`.
+- **No facis servir `cd` ni `&&` a `CC_RUN_COMMAND`**: Clever Cloud executa l'ordre directament, sense intèrpret d'ordres, i falla amb `exec: cd: not found`. Per això s'usa `--app-dir backend`.
+- `FORWARDED_ALLOW_IPS=*` fa que uvicorn vegi la IP real del visitant (necessari perquè el límit de peticions compti per visitant i no pel proxy).
 - Deixa-la en **1 instància**: el límit de peticions es compta per instància.
 - Domini: `api.arreucampers.cat`. Comprova `https://api.arreucampers.cat/api/health` (ha de respondre `{"status":"ok"}`).
 
@@ -135,8 +150,9 @@ PUBLIC_API_URL=https://api.arreucampers.cat/api
 ```
 
 - Clever Cloud detecta el `Caddyfile` de l'arrel i el fa servir com a servidor (port 8080).
-- La versió de Node la marca el camp `engines` de `package.json` (≥ 22.12). Segons la documentació de Clever Cloud, els fitxers `.nvmrc` s'ignoren (no en creïs).
+- La documentació de les aplicacions Static no explica com es tria la versió de Node. Si el *build* falla perquè Astro demana Node 22.12 o superior, prova d'afegir `CC_NODE_VERSION=22`. Per veure quina versió fa servir, posa temporalment `node -v &&` al principi de `CC_BUILD_COMMAND`. Els fitxers `.nvmrc` s'ignoren (no en creïs).
 - Si tot dona 404, canvia al `Caddyfile` la línia `root * dist` per `root * {$APP_HOME}/dist`.
+- Prova primer el web a la seva adreça `*.cleverapps.io`. Si hi proves el formulari, afegeix temporalment aquesta adreça a `ALLOWED_ORIGINS` del backend (separada per una coma) i, perquè la CSP deixi connectar-se al backend, compila amb `PUBLIC_API_URL` apuntant a un domini que ja existeixi.
 
 ### 3. Dominis i DNS
 
@@ -145,9 +161,9 @@ Afegeix a l'aplicació Static `www.arreucampers.cat` (principal) i els altres se
 | Tipus | Nom | Valor |
 |-------|-----|-------|
 | CNAME | `www` | El destí que mostri la consola de Clever Cloud (regió París: `domain.par.clever-cloud.com.`) |
-| A | `@` | Les IP que mostri la consola |
+| A | `@` | Les IP que mostri la consola (un CNAME no es pot fer servir al domini sense `www`) |
 
-No toquis els registres MX i TXT (correu, SPF, DKIM) de `arreucampers.com`.
+Ordre recomanat: primer `api.arreucampers.cat` (registre nou, sense risc), després `www.arreucampers.cat` i `arreucampers.cat`, i finalment la resta. No toquis els registres MX i TXT (correu, SPF, DKIM) de `arreucampers.com`. Baixa el TTL a 300 s un dia abans de canviar res.
 
 ### 4. Comprovacions després de desplegar
 
@@ -160,7 +176,7 @@ curl https://www.arreucampers.cat/sitemap-index.xml
 curl https://api.arreucampers.cat/api/health
 ```
 
-Després, envia un missatge des del formulari del domini real i comprova que arriba a `CONTACT_TO_EMAIL`.
+Només `https://www.arreucampers.cat` ha de respondre 200; els altres set dominis han de respondre 301 cap a ell. Després, envia un missatge des del formulari del domini real i comprova que arriba a `CONTACT_TO_EMAIL`.
 
 ### 5. Cercadors
 

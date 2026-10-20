@@ -6,3 +6,4 @@ backend/.env
 backend/contacts.json
 __pycache__/
 .venv/
+.vscode/
