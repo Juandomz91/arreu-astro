@@ -94,6 +94,49 @@ const jsonLd = {
         .nav-links { order: 3; width: 100%; justify-content: space-between; gap: 8px; margin-top: 12px; }
         .nav-link { font-size: 13px; letter-spacing: 0; }
       }
+
+      /* ── Adaptació a mòbil i tauleta ──────────────────────────────────────────
+         Punts de tall (els mateixos a tot el web):
+           mòbil   ≤ 700px     tauleta ≤ 1024px     escriptori > 1024px
+         Els components fan servir estils en línia; el que ha de canviar segons
+         la pantalla és aquí, per classe (.hero-*, .qui-*, .contact-*). */
+
+      /* Vídeo de portada: més alt en tauleta i, sobretot, en mòbil (es retallen els costats) */
+      @media (max-width: 1024px) { .hero-video { aspect-ratio: 16/9 !important; max-height: none !important; } }
+      @media (max-width: 700px)  { .hero-video { aspect-ratio: 4/5 !important; } }
+
+      /* Qui: una foto vertical per fila, amb el quadre de text a la dreta */
+      .qui-list { display: flex; flex-direction: column; gap: 48px; }
+      .qui-row { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 32px; align-items: start; }
+      .qui-photo { width: 100%; }
+      .qui-text { max-width: 460px; }
+      @media (max-width: 1024px) { .qui-row { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; } }
+      @media (max-width: 700px)  { .qui-list { gap: 40px; } .qui-row { grid-template-columns: minmax(0, 1fr); gap: 12px; } }
+
+      /* Formulari de contacte */
+      .contact-grid { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr); }
+      .contact-side { padding: 56px 40px; min-height: 520px; }
+      .contact-main { padding: 56px 40px; }
+      .contact-two { display: grid; grid-template-columns: 1fr 1fr; }
+      .contact-field { box-sizing: border-box; width: 100%; min-width: 0; }
+      .contact-legal, .contact-consent { overflow-wrap: anywhere; }
+      /* Tauleta i mòbil: camps de 16px (iOS no fa zoom en enfocar-los) i mida còmoda al tacte */
+      @media (max-width: 1024px) {
+        .contact-field { font-size: 16px !important; min-height: 48px; }
+        .contact-consent input { width: 22px !important; height: 22px !important; }
+        .contact-submit { min-height: 52px; }
+      }
+            /* Mòbil: el panell "Contacta" continua a l'esquerra del formulari, més compacte */
+      @media (max-width: 700px) {
+        .contact-grid { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+        .contact-side { padding: 28px 14px; min-height: 0; gap: 24px; }
+        .contact-main { padding: 28px 14px; }
+        .contact-two { grid-template-columns: minmax(0, 1fr); }
+        .contact-title { font-size: 22px !important; margin-bottom: 12px !important; }
+        .contact-lang { font-size: 13px !important; }
+        .contact-brand { font-size: 22px !important; }
+        .contact-info, .contact-rights { font-size: 12px !important; overflow-wrap: anywhere; }
+      }
     </style>
 
     <slot name="head" />
