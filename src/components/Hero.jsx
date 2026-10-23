@@ -62,6 +62,7 @@ export default function Hero({ lang, logoSrc }) {
         </div>
 
         <div
+          className="hero-video"
           style={{ width: '100%', aspectRatio: '16/6', maxHeight: 420, background: colors.ink }}
           dangerouslySetInnerHTML={{ __html: VIDEO_HTML }}
         />

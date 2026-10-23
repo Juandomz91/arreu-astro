@@ -45,6 +45,23 @@ export function QueFem({ lang, gallery = [] }) {
   );
 }
 
+// Proporció de les fotos de "Qui": '3/4' = vertical; '4/3' = horitzontal.
+// Les fotos originals ja són verticals, així que amb '3/4' es veuen gairebé senceres.
+const QUI_PHOTO_RATIO = '3/4';
+
+// Una fila de "Qui": la foto a l'esquerra i el quadre de text a la dreta
+// (en mòbil, el text va sota la foto). Disposició: .qui-* a BaseLayout.astro.
+function QuiRow({ photo, alt, position = 'center', children }) {
+  return (
+    <div className="qui-row">
+      <div className="qui-photo" style={{ aspectRatio: QUI_PHOTO_RATIO }}>
+        <img src={photo.src} width={photo.width} height={photo.height} loading="lazy" decoding="async" alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: position, display: 'block' }} />
+      </div>
+      {children && <div className="qui-text" style={{ background: '#1c1b17', padding: '14px 16px' }}>{children}</div>}
+    </div>
+  );
+}
+
 export function QuiSom({ lang, images }) {
   const t = getT(lang);
 
@@ -56,28 +73,16 @@ export function QuiSom({ lang, images }) {
           {t('quiSom.text1')} <br/> {t('quiSom.text2')}
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: 24 }}>
-          <div>
-            <div style={{ aspectRatio: '4/3', width: '100%' }}>
-              <img src={images.nurbi.src} width={images.nurbi.width} height={images.nurbi.height} loading="lazy" decoding="async" alt={t('quiSom.altTeam')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', display: 'block' }} />
-            </div>
-            <div style={{ background: '#1c1b17', padding: '14px 16px', marginTop: 10 }}>
-              <div style={{ fontStyle: 'italic', fontSize: 15, fontWeight: 600, color: colors.bg }}>Norbert</div>
-              <div style={{ fontStyle: 'italic', fontSize: 13, color: colors.bodyTextLight, marginTop: 4 }}>{t('quiSom.norbertBio1')}<br/> {t('quiSom.norbertBio2')}</div>
-            </div>
-          </div>
-          <div style={{ aspectRatio: '4/3', width: '100%' }}>
-            <img src={images.duo.src} width={images.duo.width} height={images.duo.height} loading="lazy" decoding="async" alt={t('quiSom.altWorkshop')} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-          </div>
-          <div>
-            <div style={{ aspectRatio: '4/3', width: '100%' }}>
-              <img src={images.blues.src} width={images.blues.width} height={images.blues.height} loading="lazy" decoding="async" alt={t('quiSom.altVehicle')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 70%', display: 'block' }} />
-            </div>
-            <div style={{ background: '#1c1b17', padding: '14px 16px', marginTop: 10 }}>
-              <div style={{ fontStyle: 'italic', fontSize: 15, fontWeight: 600, color: colors.bg }}>Blues</div>
-              <div style={{ fontStyle: 'italic', fontSize: 13, color: colors.bodyTextLight, marginTop: 4 }}>{t('quiSom.bluesBio')}</div>
-            </div>
-          </div>
+        <div className="qui-list">
+          <QuiRow photo={images.nurbi} alt={t('quiSom.altTeam')} position="center 30%">
+            <div style={{ fontStyle: 'italic', fontSize: 15, fontWeight: 600, color: colors.bg }}>Norbert</div>
+            <div style={{ fontStyle: 'italic', fontSize: 13, color: colors.bodyTextLight, marginTop: 4 }}>{t('quiSom.norbertBio1')}<br/> {t('quiSom.norbertBio2')}</div>
+          </QuiRow>
+          <QuiRow photo={images.duo} alt={t('quiSom.altWorkshop')} />
+          <QuiRow photo={images.blues} alt={t('quiSom.altVehicle')} position="center 70%">
+            <div style={{ fontStyle: 'italic', fontSize: 15, fontWeight: 600, color: colors.bg }}>Blues</div>
+            <div style={{ fontStyle: 'italic', fontSize: 13, color: colors.bodyTextLight, marginTop: 4 }}>{t('quiSom.bluesBio')}</div>
+          </QuiRow>
         </div>
       </div>
     </section>
