@@ -10,7 +10,6 @@ const API_URL = import.meta.env.PUBLIC_API_URL || '/api';
 const EMPTY_FORM = { nom: '', cognom: '', email: '', missatge: '', website: '', consent: false };
 
 // Es carrega amb client:load (vegeu HomePage.astro): té estat i envia dades.
-// La disposició segons la pantalla (.contact-*) és a BaseLayout.astro.
 export default function ContactForm({ lang, image }) {
   const t = getT(lang);
   const legal = getFormLegal(lang);
@@ -49,7 +48,7 @@ export default function ContactForm({ lang, image }) {
   const labelStyle = { display: 'flex', flexDirection: 'column', gap: 8, fontSize: 14, fontWeight: 600, fontFamily: fonts.body };
 
   return (
-    <section>
+    <section id="contacte">
       <div style={{ width: '100%', height: '100%' }}>
         <img src={image.src} width={image.width} height={image.height} loading="lazy" decoding="async" alt={t('contact.photoAlt')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', display: 'block' }} />
       </div>

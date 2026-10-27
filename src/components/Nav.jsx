@@ -11,6 +11,7 @@ const SECTIONS = [
   { id: 'qui', key: 'quiSom.title' },
   { id: 'com', key: 'com.title' },
   { id: 'perque', key: 'perQue.title' },
+  { id: 'contacte', key: 'contact.title' },
 ];
 
 const iconStyle = { width: 38, height: 38, borderRadius: '50%', background: colors.ink, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 };
