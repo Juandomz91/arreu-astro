@@ -32,9 +32,13 @@ const images = {
   blues: await webp(bluesRaw, 900),
 };
 
-// Fotos de la graella de "Què fem": totes les de src/recursos/que-fem/,
-// ordenades pel nom del fitxer (01.jpg, 02.jpg... 09.jpg).
-const galleryFiles = import.meta.glob('../recursos/que-fem/*.{jpg,jpeg,png,webp}', { eager: true, import: 'default' });
+// Fotos de la graella de "Què fem": les últimes d'Instagram, que descarrega
+// scripts/fetch-instagram.mjs a src/recursos/instagram/ en compilar. Si no n'hi ha 9
+// (sense token, Instagram caigut...), es fan servir les de reserva de src/recursos/que-fem/.
+// En els dos casos, ordenades pel nom del fitxer (01.jpg, 02.jpg... 09.jpg).
+const instagramFiles = import.meta.glob('../recursos/instagram/*.{jpg,jpeg,png,webp}', { eager: true, import: 'default' });
+const backupFiles = import.meta.glob('../recursos/que-fem/*.{jpg,jpeg,png,webp}', { eager: true, import: 'default' });
+const galleryFiles = Object.keys(instagramFiles).length >= 9 ? instagramFiles : backupFiles;
 const gallery = await Promise.all(
   Object.keys(galleryFiles).sort().slice(0, 9).map((path) => webp(galleryFiles[path], 800))
 );

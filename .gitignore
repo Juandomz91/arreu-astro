@@ -7,3 +7,7 @@ backend/contacts.json
 __pycache__/
 .venv/
 .vscode/
+
+# Fotos baixades d'Instagram en compilar (les genera scripts/fetch-instagram.mjs)
+src/recursos/instagram/
+src/recursos/.instagram-tmp-*/

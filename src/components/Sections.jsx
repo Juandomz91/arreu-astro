@@ -8,7 +8,7 @@ import { getT } from '../i18n/translations.js';
 // Graella de fotos de "Què fem": 3 × 3, amb el mateix estil de línies negres
 // que tenia la taula de textos. Les fotos arriben optimitzades des de HomePage.astro.
 const GALLERY_SIZE = 9;
-const GALLERY_RATIO = '4/3'; // proporció de cada casella ('1/1' per a quadrades)
+const GALLERY_RATIO = '1/1'; // proporció de cada casella: quadrades ('4/3' = horitzontals)
 
 export function QueFem({ lang, gallery = [] }) {
   const t = getT(lang);
