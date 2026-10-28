@@ -78,6 +78,13 @@ const jsonLd = {
       html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
       @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
+      /* Text justificat a tot el web: paràgrafs, llistes i els quadres de text de "Qui".
+         Els títols, el menú i els botons es queden com estan. `hyphens: auto` (usa l'idioma
+         de <html lang>) talla paraules llargues amb guionet perquè no quedin forats grans,
+         sobretot en pantalles estretes. L'última línia de cada paràgraf no es justifica. */
+      p, li, .qui-text { text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; }
+      .nav-links li, .updated { text-align: left; hyphens: none; }
+
       .nav-links { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
       .nav-link {
         font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600;
@@ -126,7 +133,7 @@ const jsonLd = {
         .contact-consent input { width: 22px !important; height: 22px !important; }
         .contact-submit { min-height: 52px; }
       }
-            /* Mòbil: el panell "Contacta" continua a l'esquerra del formulari, més compacte */
+      /* Mòbil: el panell "Contacta" continua a l'esquerra del formulari, més compacte */
       @media (max-width: 700px) {
         .contact-grid { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
         .contact-side { padding: 28px 14px; min-height: 0; gap: 24px; }
