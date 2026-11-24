@@ -112,12 +112,13 @@ const jsonLd = {
       @media (max-width: 1024px) { .hero-video { aspect-ratio: 16/9 !important; max-height: none !important; } }
       @media (max-width: 700px)  { .hero-video { aspect-ratio: 4/5 !important; } }
 
-      /* Qui: foto | quadre de text | foto (en mòbil, en vertical: foto, text, foto) */
-      .qui-trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; align-items: center; }
-      .qui-photo { width: 100%; overflow: hidden; }
-      .qui-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-      @media (max-width: 1024px) { .qui-trio { gap: 24px; } }
-      @media (max-width: 700px)  { .qui-trio { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+      /* Qui: una foto vertical per fila, amb el quadre de text a la dreta */
+      .qui-list { display: flex; flex-direction: column; gap: 48px; }
+      .qui-photo { width: 100%; max-width: 300px; margin: 0 auto; overflow: hidden; }
+      .qui-photo { width: 100%; }
+      .qui-text { max-width: 460px; }
+      @media (max-width: 1024px) { .qui-row { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; } }
+      @media (max-width: 700px)  { .qui-list { gap: 40px; } .qui-row { grid-template-columns: minmax(0, 1fr); gap: 12px; } }
 
       /* Formulari de contacte */
       .contact-grid { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr); }
